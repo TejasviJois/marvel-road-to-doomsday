@@ -7,8 +7,8 @@
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="Doomsday" />
-  <title>The Road to Doomsday · Marvel Watchlist</title>
+  <meta name="apple-mobile-web-app-title" content="Marvel Watchlist" />
+  <title>Marvel Watchlist · Road to Doomsday</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -23,14 +23,14 @@
     <div class="hud-brand">
       <div class="m-mark" aria-hidden="true">M</div>
       <div>
-        <p class="eyebrow">Marvel Studios · Beginner Watch Order</p>
-        <h1>The Road to Doomsday</h1>
+        <p class="eyebrow" id="brand-eyebrow">Marvel Studios · Beginner Watch Order</p>
+        <h1 id="brand-title">The Road to Doomsday</h1>
       </div>
     </div>
 
     <div class="hud-stats">
       <div class="stat-block">
-        <p class="stat-label">Universe completed</p>
+        <p class="stat-label" id="progress-caption">Doomsday path</p>
         <p class="stat-value" id="progress-label">0 / 46</p>
         <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progress-bar">
           <span class="bar-fill" id="progress-fill"></span>
@@ -38,14 +38,19 @@
         <p class="stat-pct" id="progress-pct">0%</p>
       </div>
       <div class="stat-block countdown" id="countdown">
-        <p class="stat-label">Until Doomsday</p>
+        <p class="stat-label" id="side-label">Until Doomsday</p>
         <p class="stat-value" id="countdown-value">—</p>
-        <p class="stat-sub">December 18, 2026</p>
+        <p class="stat-sub" id="side-sub">December 18, 2026</p>
       </div>
     </div>
   </header>
 
   <main>
+    <div class="track-bar" role="tablist" aria-label="Watch tracks">
+      <button type="button" class="track-btn is-on" data-track="doomsday">Road to Doomsday</button>
+      <button type="button" class="track-btn" data-track="master">Master Marvel</button>
+    </div>
+
     <section class="next-up" id="next-up" hidden></section>
 
     <nav class="era-rail" id="era-rail" aria-label="Watch eras"></nav>
@@ -57,6 +62,13 @@
         <button class="chip" data-filter="done">Watched</button>
       </div>
       <div class="toolbar-right">
+        <label class="sort-wrap" id="sort-wrap" hidden>
+          <span class="sort-label">Sort</span>
+          <select id="master-sort" aria-label="Master list sort">
+            <option value="recommended">Recommended</option>
+            <option value="category">By category</option>
+          </select>
+        </label>
         <input id="search" type="search" placeholder="Find a title…" autocomplete="off" />
         <button class="btn-add" id="open-add" type="button">+ Add title</button>
       </div>
@@ -66,7 +78,7 @@
   </main>
 
   <footer class="foot">
-    <p>Progress saves on this device. Add anything that comes after Doomsday from the button above.</p>
+    <p id="foot-copy">Progress saves on this device. Master Marvel is the non-duplicate backlog after Doomsday.</p>
     <button type="button" class="linkish" id="reset-progress">Reset watched</button>
   </footer>
 
@@ -131,6 +143,7 @@
   </dialog>
 
   <script src="data.js"></script>
+  <script src="master.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

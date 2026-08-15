@@ -7,6 +7,8 @@ const state = {
   filter: "all",
   query: "",
   pendingPoster: "",
+  track: "doomsday",
+  masterSort: "recommended",
 };
 
 function load() {
@@ -15,6 +17,8 @@ function load() {
     state.watched = raw.watched || {};
     state.custom = raw.custom || [];
     state.customEras = raw.customEras || [];
+    if (raw.track === "master" || raw.track === "doomsday") state.track = raw.track;
+    if (raw.masterSort === "category" || raw.masterSort === "recommended") state.masterSort = raw.masterSort;
   } catch {
     state.watched = {};
     state.custom = [];
@@ -29,18 +33,44 @@ function save() {
       watched: state.watched,
       custom: state.custom,
       customEras: state.customEras,
+      track: state.track,
+      masterSort: state.masterSort,
     })
   );
 }
 
+function doomsdayCatalog() {
+  return CATALOG.map((item) => ({ ...item, track: "doomsday" })).concat(
+    state.custom.filter((item) => (item.track || "doomsday") === "doomsday")
+  );
+}
+
+function masterCatalog() {
+  return hydrateMasterCatalog().concat(
+    state.custom.filter((item) => item.track === "master")
+  );
+}
+
+function catalog() {
+  return state.track === "master" ? masterCatalog() : doomsdayCatalog();
+}
+
+function storyCatalog(list) {
+  return list.filter((item) => item.status !== "reference" && item.status !== "upcoming");
+}
+
 function eras() {
+  if (state.track === "master") {
+    return state.masterSort === "category" ? MASTER_CATEGORIES : MASTER_TIERS;
+  }
   const dest = ERAS.filter((era) => era.id === "destination");
   const rest = ERAS.filter((era) => era.id !== "destination");
   return rest.concat(state.customEras).concat(dest);
 }
 
-function catalog() {
-  return CATALOG.concat(state.custom);
+function groupKey(item) {
+  if (state.track !== "master") return item.era;
+  return state.masterSort === "category" ? item.category : item.tier;
 }
 
 function uniqueKeys(list) {
@@ -52,6 +82,8 @@ function isWatched(item) {
 }
 
 function toggleWatched(watchKey) {
+  const item = catalog().find((entry) => entry.watchKey === watchKey);
+  if (item && item.status === "upcoming") return;
   state.watched[watchKey] = !state.watched[watchKey];
   if (!state.watched[watchKey]) delete state.watched[watchKey];
   save();
@@ -81,45 +113,102 @@ function matchesFilter(item) {
   if (state.filter === "done" && !done) return false;
   if (state.query) {
     const q = state.query.toLowerCase();
-    const hay = [item.title, item.year, item.note, item.rec, item.type].join(" ").toLowerCase();
+    const hay = [item.title, item.year, item.note, item.rec, item.type, item.matches, item.status]
+      .join(" ")
+      .toLowerCase();
     if (!hay.includes(q)) return false;
   }
   return true;
 }
 
+function typeLabel(item) {
+  if (item.type === "series") return "Series";
+  if (item.type === "special") return "Special";
+  if (item.type === "short") return "Short";
+  return "Movie";
+}
+
+function renderBrand() {
+  const eyebrow = document.getElementById("brand-eyebrow");
+  const title = document.getElementById("brand-title");
+  const sortWrap = document.getElementById("sort-wrap");
+  const foot = document.getElementById("foot-copy");
+  if (state.track === "master") {
+    eyebrow.textContent = "After Doomsday · Non-duplicate backlog";
+    title.textContent = "Master Marvel";
+    sortWrap.hidden = false;
+    document.getElementById("master-sort").value = state.masterSort;
+    foot.textContent =
+      "Master Marvel never repeats Doomsday titles. Docs & upcoming sit outside story progress.";
+  } else {
+    eyebrow.textContent = "Marvel Studios · Beginner Watch Order";
+    title.textContent = "The Road to Doomsday";
+    sortWrap.hidden = true;
+    foot.textContent =
+      "Progress saves on this device. Switch to Master Marvel for the deep archive after Doomsday.";
+  }
+  document.querySelectorAll("[data-track]").forEach((btn) => {
+    btn.classList.toggle("is-on", btn.dataset.track === state.track);
+  });
+}
+
 function renderCountdown() {
-  const el = document.getElementById("countdown-value");
+  const sideLabel = document.getElementById("side-label");
+  const sideSub = document.getElementById("side-sub");
+  const value = document.getElementById("countdown-value");
+  if (state.track === "master") {
+    const doom = storyCatalog(doomsdayCatalog());
+    const keys = uniqueKeys(doom);
+    const done = keys.filter((key) => state.watched[key]).length;
+    const pct = keys.length ? Math.round((done / keys.length) * 100) : 0;
+    sideLabel.textContent = "Doomsday path";
+    value.textContent = done + " / " + keys.length;
+    sideSub.textContent = pct + "% of the spine done";
+    return;
+  }
   const info = daysUntilDoomsday();
-  el.textContent = info.text;
+  sideLabel.textContent = "Until Doomsday";
+  value.textContent = info.text;
+  sideSub.textContent = "December 18, 2026";
 }
 
 function renderProgress() {
   const items = catalog();
-  const keys = uniqueKeys(items);
+  const countable =
+    state.track === "master" ? storyCatalog(items) : items.filter((item) => !item.rewatch || true);
+  const keys = uniqueKeys(state.track === "master" ? countable : items);
   const done = keys.filter((key) => state.watched[key]).length;
   const total = keys.length;
   const pct = total ? Math.round((done / total) * 100) : 0;
+  document.getElementById("progress-caption").textContent =
+    state.track === "master" ? "Master story progress" : "Doomsday path";
   document.getElementById("progress-label").textContent = done + " / " + total;
-  document.getElementById("progress-pct").textContent = pct + "% of the universe";
+  document.getElementById("progress-pct").textContent =
+    pct + "%" + (state.track === "master" ? " of Master" : " of the universe");
   document.getElementById("progress-fill").style.width = pct + "%";
   document.getElementById("progress-bar").setAttribute("aria-valuenow", String(pct));
 }
 
 function renderNextUp() {
   const box = document.getElementById("next-up");
-  const next = catalog().find((item) => !isWatched(item) && !item.rewatch);
+  const next = catalog().find(
+    (item) => !isWatched(item) && !item.rewatch && item.status !== "upcoming" && item.status !== "reference"
+  );
   if (!next) {
     box.hidden = false;
     box.innerHTML =
-      '<div></div><div><p class="next-kicker">Status</p><h2>The list is clear.</h2><p>Everything on the road to Doomsday is marked watched. Add the next title when it drops.</p></div>';
+      state.track === "master"
+        ? '<div></div><div><p class="next-kicker">Status</p><h2>Master backlog clear.</h2><p>Every story title on this track is marked watched. Docs and upcoming stay on their shelves.</p></div>'
+        : '<div></div><div><p class="next-kicker">Status</p><h2>The list is clear.</h2><p>Everything on the road to Doomsday is marked watched. Open Master Marvel for the deep archive.</p></div>';
     return;
   }
-  const era = eras().find((e) => e.id === next.era);
+  const groups = eras();
+  const era = groups.find((e) => e.id === groupKey(next));
   box.hidden = false;
   box.innerHTML =
     '<img src="' +
     escapeAttr(next.poster) +
-    '" alt="" decoding="async" />' +
+    '" alt="" decoding="async" onerror="this.style.opacity=.2" />' +
     '<div><p class="next-kicker">Next up</p><h2>' +
     escapeHtml(next.title) +
     "</h2><p>" +
@@ -127,7 +216,8 @@ function renderNextUp() {
     " · " +
     (next.year || "") +
     " · " +
-    (next.type === "series" ? "Series" : "Movie") +
+    typeLabel(next) +
+    (next.matches ? " · " + escapeHtml(next.matches) : "") +
     "</p></div>" +
     '<button class="btn-add" type="button" data-watch="' +
     escapeAttr(next.watchKey) +
@@ -139,8 +229,9 @@ function renderRail() {
   const items = catalog();
   rail.innerHTML = eras()
     .map((era) => {
-      const inEra = items.filter((item) => item.era === era.id);
-      const keys = uniqueKeys(inEra);
+      const inEra = items.filter((item) => groupKey(item) === era.id);
+      const countable = state.track === "master" ? storyCatalog(inEra) : inEra;
+      const keys = uniqueKeys(countable.length ? countable : inEra);
       const done = keys.filter((key) => state.watched[key]).length;
       const pct = keys.length ? Math.round((done / keys.length) * 100) : 0;
       return (
@@ -164,14 +255,16 @@ function renderRail() {
 
 function renderTimeline() {
   const root = document.getElementById("timeline");
-  const items = catalog();
+  const items = catalog().slice().sort((a, b) => (a.order || 0) - (b.order || 0));
   root.innerHTML = eras()
     .map((era) => {
-      const inEra = items.filter((item) => item.era === era.id);
+      const inEra = items.filter((item) => groupKey(item) === era.id);
       const visible = inEra.filter(matchesFilter);
-      const keys = uniqueKeys(inEra);
+      const countable = state.track === "master" ? storyCatalog(inEra) : inEra;
+      const keys = uniqueKeys(countable.length ? countable : inEra);
       const done = keys.filter((key) => state.watched[key]).length;
-      if (!visible.length && state.query) return "";
+      if (!visible.length && (state.query || state.filter !== "all")) return "";
+      if (!visible.length && !inEra.length) return "";
       return (
         '<section class="era" id="era-' +
         era.id +
@@ -200,9 +293,18 @@ function renderTimeline() {
 function cardHtml(item) {
   const done = isWatched(item);
   const dest = item.destination ? " is-destination" : "";
-  const cls = "card" + (done ? " is-done" : "") + dest;
+  const upcoming = item.status === "upcoming" ? " is-upcoming" : "";
+  const reference = item.status === "reference" ? " is-reference" : "";
+  const cls = "card" + (done ? " is-done" : "") + dest + upcoming + reference;
   const rec = item.rec ? '<span class="badge">' + escapeHtml(item.rec) + "</span>" : "";
   const note = item.note ? '<span class="note">' + escapeHtml(item.note) + "</span>" : "";
+  const match = item.matches ? '<span class="match">Pairs: ' + escapeHtml(item.matches) + "</span>" : "";
+  const statusBadge =
+    item.status === "upcoming"
+      ? '<span class="badge">Upcoming</span>'
+      : item.status === "reference"
+        ? '<span class="badge">Reference</span>'
+        : "";
   const del = item.custom
     ? '<button class="del" type="button" data-del="' + escapeAttr(item.id) + '" aria-label="Remove">×</button>'
     : "";
@@ -220,7 +322,7 @@ function cardHtml(item) {
     escapeAttr(item.poster) +
     '" alt="' +
     escapeAttr(item.title) +
-    ' poster" loading="lazy" decoding="async" /><div class="check">' +
+    ' poster" loading="lazy" decoding="async" onerror="this.src=\'\';this.classList.add(\'missing\')" /><div class="check">' +
     (done ? "✓" : "") +
     '</div><div class="stamp">WATCHED</div></div>' +
     '<div class="meta"><h3>' +
@@ -229,9 +331,11 @@ function cardHtml(item) {
     '</h3><p class="sub">' +
     (item.year || "—") +
     " · " +
-    (item.type === "series" ? "Series" : "Movie") +
+    typeLabel(item) +
     "</p>" +
+    statusBadge +
     rec +
+    match +
     note +
     extra +
     "</div></article>"
@@ -247,6 +351,7 @@ function fillEraSelect() {
 }
 
 function render() {
+  renderBrand();
   renderCountdown();
   renderProgress();
   renderNextUp();
@@ -269,6 +374,14 @@ function escapeAttr(value) {
 
 function bind() {
   document.addEventListener("click", (event) => {
+    const trackBtn = event.target.closest("[data-track]");
+    if (trackBtn) {
+      state.track = trackBtn.dataset.track;
+      save();
+      render();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
     const del = event.target.closest("[data-del]");
     if (del) {
       event.stopPropagation();
@@ -289,6 +402,12 @@ function bind() {
     });
   });
 
+  document.getElementById("master-sort").addEventListener("change", (event) => {
+    state.masterSort = event.target.value;
+    save();
+    render();
+  });
+
   document.getElementById("search").addEventListener("input", (event) => {
     state.query = event.target.value.trim();
     renderTimeline();
@@ -301,6 +420,7 @@ function bind() {
     document.getElementById("poster-preview").hidden = true;
     document.getElementById("form-status").hidden = true;
     document.getElementById("new-era-wrap").hidden = true;
+    fillEraSelect();
     modal.showModal();
   });
   document.getElementById("cancel-add").addEventListener("click", () => modal.close());
@@ -317,7 +437,7 @@ function bind() {
   document.getElementById("add-form").addEventListener("submit", onAdd);
 
   document.getElementById("reset-progress").addEventListener("click", () => {
-    if (!confirm("Clear every watched check? Custom titles stay on the list.")) return;
+    if (!confirm("Clear every watched check on both tracks? Custom titles stay on the list.")) return;
     state.watched = {};
     save();
     render();
@@ -408,13 +528,14 @@ function onPosterFile(event) {
   const file = event.target.files && event.target.files[0];
   if (!file) return;
   const reader = new FileReader();
-  reader.onload = () => compressImage(reader.result).then((dataUrl) => {
-    document.getElementById("poster-url").value = "";
-    showPreview(dataUrl);
-    const status = document.getElementById("form-status");
-    status.hidden = false;
-    status.textContent = "Poster attached.";
-  });
+  reader.onload = () =>
+    compressImage(reader.result).then((dataUrl) => {
+      document.getElementById("poster-url").value = "";
+      showPreview(dataUrl);
+      const status = document.getElementById("form-status");
+      status.hidden = false;
+      status.textContent = "Poster attached.";
+    });
   reader.readAsDataURL(file);
 }
 
@@ -467,17 +588,27 @@ function onAdd(event) {
 
   const id = slug(title) + "-" + Date.now();
   const poster = state.pendingPoster || field(form, "posterUrl").value.trim() || "";
-  state.custom.push({
+  const entry = {
     id,
     watchKey: id,
     title,
     year: field(form, "year").value ? Number(field(form, "year").value) : "",
     type: field(form, "type").value,
-    era: eraId,
+    track: state.track,
     poster: poster || placeholderPoster(title),
     note: field(form, "note").value.trim(),
     custom: true,
-  });
+    order: Date.now(),
+  };
+  if (state.track === "master") {
+    if (state.masterSort === "category") entry.category = eraId;
+    else entry.tier = eraId;
+    entry.category = entry.category || "mcu-series";
+    entry.tier = entry.tier || "tier-1";
+  } else {
+    entry.era = eraId;
+  }
+  state.custom.push(entry);
   save();
   document.getElementById("add-modal").close();
   render();
