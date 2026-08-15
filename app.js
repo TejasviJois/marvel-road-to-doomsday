@@ -139,7 +139,7 @@ function renderBrand() {
     sortWrap.hidden = false;
     document.getElementById("master-sort").value = state.masterSort;
     foot.textContent =
-      "Master Marvel never repeats Doomsday titles. Docs & upcoming sit outside story progress.";
+      "Master Marvel never repeats Doomsday titles. Progress saves on this device.";
   } else {
     eyebrow.textContent = "Marvel Studios · Beginner Watch Order";
     title.textContent = "The Road to Doomsday";
@@ -318,11 +318,13 @@ function cardHtml(item) {
     escapeAttr(item.watchKey) +
     '">' +
     del +
-    '<div class="poster-wrap"><img src="' +
+    '<div class="poster-wrap" data-fallback="' +
+    escapeAttr(item.title) +
+    '"><img src="' +
     escapeAttr(item.poster) +
     '" alt="' +
     escapeAttr(item.title) +
-    ' poster" loading="lazy" decoding="async" onerror="this.src=\'\';this.classList.add(\'missing\')" /><div class="check">' +
+    ' poster" loading="lazy" decoding="async" onerror="this.remove();this.parentNode.classList.add(\'no-art\')" /><div class="check">' +
     (done ? "✓" : "") +
     '</div><div class="stamp">WATCHED</div></div>' +
     '<div class="meta"><h3>' +

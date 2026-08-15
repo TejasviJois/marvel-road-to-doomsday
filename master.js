@@ -18,7 +18,7 @@ const MASTER_TIERS = [
     name: "Tier 3 · MCU fill & specials",
     tag: "Phase glue",
     color: "#2d6cdf",
-    blurb: "Secret Invasion, holiday specials, one-shots, Eyes of Wakanda, I Am Groot.",
+    blurb: "Secret Invasion, holiday specials, Eyes of Wakanda, I Am Groot.",
   },
   {
     id: "tier-4",
@@ -46,28 +46,14 @@ const MASTER_TIERS = [
     name: "Tier 7 · Animation archive",
     tag: "Deep dive",
     color: "#1aaa6e",
-    blurb: "Classic Spider-Man & X-Men cartoons, animated movies, modern kids/series.",
-  },
-  {
-    id: "tier-ref",
-    name: "Reference · Docs & recaps",
-    tag: "Not story",
-    color: "#9b9588",
-    blurb: "Legends, Assembled, 616 — use when you forgot a character. Not in story progress.",
-  },
-  {
-    id: "tier-future",
-    name: "Upcoming",
-    tag: "Not out yet",
-    color: "#e8c547",
-    blurb: "Parked until release. Doomsday stays on the main Road track.",
+    blurb: "Classic Spider-Man & X-Men cartoons, animated movies, modern series.",
   },
 ];
 
 const MASTER_CATEGORIES = [
   { id: "mcu-series", name: "MCU Series", tag: "Live-action", color: "#e62429", blurb: "Disney+ MCU shows after your Doomsday path." },
   { id: "mcu-magic", name: "MCU Multiverse & Magic", tag: "Live-action", color: "#9b59ff", blurb: "Agatha, Ironheart, Secret Invasion." },
-  { id: "specials", name: "Specials & One-Shots", tag: "Live-action shorts", color: "#f0c14b", blurb: "Werewolf by Night, Holiday Special, MCU One-Shots." },
+  { id: "specials", name: "Specials & One-Shots", tag: "Live-action shorts", color: "#f0c14b", blurb: "Werewolf by Night, Holiday Special, select one-shots." },
   { id: "fox-extra", name: "Fox / X-Men leftovers", tag: "Live-action", color: "#3d8bff", blurb: "Origins, Logan, New Mutants, Legion, The Gifted." },
   { id: "sony-extra", name: "Sony Spider-Man Universe", tag: "Live-action", color: "#c9a227", blurb: "The Venom trilogy is already on Doomsday. This is the rest." },
   { id: "legacy-films", name: "Old Marvel movies", tag: "Live-action", color: "#8b5a2b", blurb: "Blade, Hulk 2003, old FF, Daredevil, Ghost Rider, archive." },
@@ -75,11 +61,9 @@ const MASTER_CATEGORIES = [
   { id: "abc", name: "ABC / Marvel Television", tag: "Live-action", color: "#2d6cdf", blurb: "Agent Carter, Agents of S.H.I.E.L.D., Inhumans." },
   { id: "hulu", name: "Hulu / Marvel Television", tag: "Live-action", color: "#e87722", blurb: "Runaways, Cloak & Dagger, Helstrom." },
   { id: "anim-modern", name: "Modern animation", tag: "Animation", color: "#1aaa6e", blurb: "What If…?, Zombies, X-Men '97, Spider-Verse, I Am Groot, more." },
-  { id: "anim-spidey", name: "Classic Spider-Man animation", tag: "Animation", color: "#2d6cdf", blurb: "1967 through Spectacular and Ultimate." },
+  { id: "anim-spidey", name: "Classic Spider-Man animation", tag: "Animation", color: "#2d6cdf", blurb: "1994 through Spectacular and Ultimate." },
   { id: "anim-xmen", name: "Classic X-Men animation", tag: "Animation", color: "#3d8bff", blurb: "TAS → Evolution → Wolverine and the X-Men → then '97." },
-  { id: "anim-movies", name: "Old animated movies", tag: "Animation", color: "#6b8e23", blurb: "Ultimate Avengers, Planet Hulk, and the DTV era." },
-  { id: "docs", name: "Documentary / recap", tag: "Reference", color: "#9b9588", blurb: "Not narrative. Recaps and making-of." },
-  { id: "upcoming", name: "Upcoming", tag: "Future", color: "#e8c547", blurb: "Hold until release." },
+  { id: "anim-movies", name: "Old animated movies", tag: "Animation", color: "#6b8e23", blurb: "Planet Hulk, Invincible Iron Man, and the DTV era." },
 ];
 
 /** Master Marvel backlog — NO Doomsday duplicates. LEGO skipped. */
@@ -103,11 +87,9 @@ const MASTER_CATALOG = [
   { id: "born-again-s2", title: "Daredevil: Born Again — S2", year: 2026, type: "series", track: "master", tier: "tier-1", category: "mcu-series", matches: "After Born Again S1", tmdb: "tv/203742", order: 150 },
   { id: "punisher-olk", title: "The Punisher: One Last Kill", year: 2026, type: "special", track: "master", tier: "tier-1", category: "mcu-series", matches: "After Netflix Punisher / Born Again", tmdb: "tv/203742", order: 160, note: "2026 Marvel special" },
 
-  { id: "fatws", title: "The Falcon and the Winter Soldier — S1", year: 2021, type: "series", track: "master", tier: "tier-1", category: "mcu-series", matches: "Pairs with Captain America: Brave New World / Thunderbolts*", tmdb: "tv/88396", order: 170 },
   { id: "hawkeye", title: "Hawkeye — S1", year: 2021, type: "series", track: "master", tier: "tier-1", category: "mcu-series", matches: "Leads into Echo", tmdb: "tv/88329", order: 180 },
   { id: "echo", title: "Echo — S1", year: 2024, type: "series", track: "master", tier: "tier-1", category: "mcu-series", matches: "After Hawkeye / Daredevil", tmdb: "tv/122555", order: 190 },
   { id: "moon-knight", title: "Moon Knight — S1", year: 2022, type: "series", track: "master", tier: "tier-1", category: "mcu-series", tmdb: "tv/92782", order: 200 },
-  { id: "ms-marvel", title: "Ms. Marvel — S1", year: 2022, type: "series", track: "master", tier: "tier-1", category: "mcu-series", matches: "Pairs with The Marvels", tmdb: "tv/92783", order: 210 },
   { id: "she-hulk", title: "She-Hulk: Attorney-at-Law — S1", year: 2022, type: "series", track: "master", tier: "tier-1", category: "mcu-series", matches: "Pairs with Hulk lore / Daredevil cameo", tmdb: "tv/92749", order: 220 },
   { id: "agatha", title: "Agatha All Along — S1", year: 2024, type: "series", track: "master", tier: "tier-1", category: "mcu-magic", matches: "Pairs with WandaVision", tmdb: "tv/138501", order: 230 },
   { id: "ironheart", title: "Ironheart — S1", year: 2025, type: "series", track: "master", tier: "tier-1", category: "mcu-magic", matches: "Pairs with Black Panther / Wakanda Forever", tmdb: "tv/114472", order: 240 },
@@ -139,15 +121,7 @@ const MASTER_CATALOG = [
   { id: "eyes-wakanda", title: "Eyes of Wakanda — S1", year: 2025, type: "series", track: "master", tier: "tier-3", category: "anim-modern", matches: "Pairs with Black Panther / Wakanda Forever", tmdb: "tv/243346", order: 530 },
   { id: "iamgroot-s1", title: "I Am Groot — S1", year: 2022, type: "series", track: "master", tier: "tier-3", category: "anim-modern", matches: "Pairs with Guardians", tmdb: "tv/114468", order: 540 },
   { id: "iamgroot-s2", title: "I Am Groot — S2", year: 2023, type: "series", track: "master", tier: "tier-3", category: "anim-modern", matches: "Pairs with Guardians", tmdb: "tv/114468", order: 550 },
-  { id: "consultant", title: "The Consultant", year: 2011, type: "short", track: "master", tier: "tier-3", category: "specials", matches: "Pairs with Iron Man 2 / Incredible Hulk era", tmdb: "movie/76535", order: 560 },
-  { id: "funny-thing", title: "A Funny Thing Happened on the Way to Thor's Hammer", year: 2011, type: "short", track: "master", tier: "tier-3", category: "specials", matches: "Pairs with Thor", tmdb: "movie/76535", order: 570 },
-  { id: "item-47", title: "Item 47", year: 2012, type: "short", track: "master", tier: "tier-3", category: "specials", matches: "Pairs with The Avengers / Agents of S.H.I.E.L.D.", tmdb: "movie/76535", order: 580 },
   { id: "agent-carter-os", title: "Agent Carter (One-Shot)", year: 2013, type: "short", track: "master", tier: "tier-3", category: "specials", matches: "Leads into Agent Carter series", tmdb: "movie/76535", order: 590 },
-  { id: "all-hail-king", title: "All Hail the King", year: 2014, type: "short", track: "master", tier: "tier-3", category: "specials", matches: "Pairs with Iron Man 3 / Shang-Chi", tmdb: "movie/76535", order: 600 },
-  { id: "team-thor", title: "Team Thor", year: 2016, type: "short", track: "master", tier: "tier-3", category: "specials", matches: "Pairs with Thor / Age of Ultron", tmdb: "movie/76535", order: 610 },
-  { id: "team-thor-2", title: "Team Thor: Part 2", year: 2017, type: "short", track: "master", tier: "tier-3", category: "specials", matches: "Pairs with Thor", tmdb: "movie/76535", order: 620 },
-  { id: "team-darryl", title: "Team Darryl", year: 2018, type: "short", track: "master", tier: "tier-3", category: "specials", matches: "Pairs with Thor: Ragnarok", tmdb: "movie/76535", order: 630 },
-  { id: "peters-todo", title: "Peter's To-Do List", year: 2019, type: "short", track: "master", tier: "tier-3", category: "specials", matches: "Pairs with Far From Home", tmdb: "movie/76535", order: 640 },
 
   // Tier 4 Sony
   { id: "morbius", title: "Morbius", year: 2022, type: "movie", track: "master", tier: "tier-4", category: "sony-extra", matches: "Sonyverse — after Venom trilogy (on Doomsday list)", tmdb: "movie/526896", order: 700 },
@@ -184,13 +158,6 @@ const MASTER_CATALOG = [
   { id: "elektra", title: "Elektra", year: 2005, type: "movie", track: "master", tier: "tier-6", category: "legacy-films", matches: "After Daredevil (2003)", tmdb: "movie/8967", order: 1080 },
   { id: "ghost-rider", title: "Ghost Rider", year: 2007, type: "movie", track: "master", tier: "tier-6", category: "legacy-films", tmdb: "movie/1250", order: 1090 },
   { id: "ghost-rider-2", title: "Ghost Rider: Spirit of Vengeance", year: 2011, type: "movie", track: "master", tier: "tier-6", category: "legacy-films", tmdb: "movie/18823", order: 1100 },
-  { id: "punisher-2004", title: "The Punisher (2004)", year: 2004, type: "movie", track: "master", tier: "tier-6", category: "legacy-films", matches: "Legacy — before Netflix Punisher", tmdb: "movie/7220", order: 1110 },
-  { id: "punisher-warzones", title: "Punisher: War Zone", year: 2008, type: "movie", track: "master", tier: "tier-6", category: "legacy-films", tmdb: "movie/13052", order: 1120 },
-  { id: "howard-duck", title: "Howard the Duck", year: 1986, type: "movie", track: "master", tier: "tier-6", category: "legacy-films", matches: "Archive — cameo ties in GotG", tmdb: "movie/10674", order: 1130 },
-  { id: "punisher-1989", title: "The Punisher (1989)", year: 1989, type: "movie", track: "master", tier: "tier-6", category: "legacy-films", tmdb: "movie/8867", order: 1140 },
-  { id: "cap-1990", title: "Captain America (1990)", year: 1990, type: "movie", track: "master", tier: "tier-6", category: "legacy-films", tmdb: "movie/13995", order: 1150 },
-  { id: "nick-fury-1998", title: "Nick Fury: Agent of S.H.I.E.L.D. (1998)", year: 1998, type: "movie", track: "master", tier: "tier-6", category: "legacy-films", tmdb: "movie/21529", order: 1160 },
-  { id: "man-thing", title: "Man-Thing (2005)", year: 2005, type: "movie", track: "master", tier: "tier-6", category: "legacy-films", tmdb: "movie/12549", order: 1170 },
   { id: "generation-x", title: "Generation X (1996)", year: 1996, type: "movie", track: "master", tier: "tier-6", category: "legacy-films", note: "TV movie", tmdb: "movie/22975", order: 1180 },
 
   // Tier 7 animation archive
@@ -200,17 +167,11 @@ const MASTER_CATALOG = [
   { id: "emh", title: "Avengers: Earth's Mightiest Heroes", year: 2010, type: "series", track: "master", tier: "tier-7", category: "anim-modern", matches: "Best classic Avengers cartoon", tmdb: "tv/31866", order: 1230 },
   { id: "marvels-avengers", title: "Marvel's Avengers", year: 2013, type: "series", track: "master", tier: "tier-7", category: "anim-modern", tmdb: "tv/44266", order: 1240 },
   { id: "marvels-gotg", title: "Marvel's Guardians of the Galaxy", year: 2015, type: "series", track: "master", tier: "tier-7", category: "anim-modern", tmdb: "tv/62266", order: 1250 },
-  { id: "moon-girl", title: "Marvel's Moon Girl and Devil Dinosaur", year: 2023, type: "series", track: "master", tier: "tier-7", category: "anim-modern", tmdb: "tv/114718", order: 1260 },
-  { id: "spidey-friends", title: "Marvel's Spidey and His Amazing Friends", year: 2021, type: "series", track: "master", tier: "tier-7", category: "anim-modern", tmdb: "tv/120989", order: 1270 },
   { id: "marvel-rising", title: "Marvel Rising", year: 2018, type: "special", track: "master", tier: "tier-7", category: "anim-modern", tmdb: "movie/526020", order: 1280 },
-  { id: "ironman-awesome", title: "Marvel's Iron Man and His Awesome Friends", year: 2025, type: "series", track: "master", tier: "tier-7", category: "anim-modern", tmdb: "tv/273829", order: 1290 },
   { id: "modok", title: "M.O.D.O.K. — S1", year: 2021, type: "series", track: "master", tier: "tier-7", category: "anim-modern", tmdb: "tv/103768", order: 1300 },
   { id: "hit-monkey-s1", title: "Hit-Monkey — S1", year: 2021, type: "series", track: "master", tier: "tier-7", category: "anim-modern", tmdb: "tv/106712", order: 1310 },
   { id: "hit-monkey-s2", title: "Hit-Monkey — S2", year: 2024, type: "series", track: "master", tier: "tier-7", category: "anim-modern", tmdb: "tv/106712", order: 1320 },
 
-  { id: "spiderman-1967", title: "Spider-Man (1967)", year: 1967, type: "series", track: "master", tier: "tier-7", category: "anim-spidey", tmdb: "tv/4627", order: 1400 },
-  { id: "spiderman-1981", title: "Spider-Man (1981)", year: 1981, type: "series", track: "master", tier: "tier-7", category: "anim-spidey", tmdb: "tv/4628", order: 1410 },
-  { id: "spiderman-friends", title: "Spider-Man and His Amazing Friends", year: 1981, type: "series", track: "master", tier: "tier-7", category: "anim-spidey", tmdb: "tv/4629", order: 1420 },
   { id: "spiderman-1994", title: "Spider-Man (1994)", year: 1994, type: "series", track: "master", tier: "tier-7", category: "anim-spidey", tmdb: "tv/2219", order: 1430 },
   { id: "spiderman-unlimited", title: "Spider-Man Unlimited", year: 1999, type: "series", track: "master", tier: "tier-7", category: "anim-spidey", tmdb: "tv/4630", order: 1440 },
   { id: "spiderman-mtvas", title: "Spider-Man: The New Animated Series", year: 2003, type: "series", track: "master", tier: "tier-7", category: "anim-spidey", tmdb: "tv/4631", order: 1450 },
@@ -220,8 +181,6 @@ const MASTER_CATALOG = [
   { id: "xmen-evolution", title: "X-Men: Evolution", year: 2000, type: "series", track: "master", tier: "tier-7", category: "anim-xmen", tmdb: "tv/4657", order: 1500 },
   { id: "wolverine-xmen", title: "Wolverine and the X-Men", year: 2008, type: "series", track: "master", tier: "tier-7", category: "anim-xmen", tmdb: "tv/4658", order: 1510 },
 
-  { id: "ultimate-avengers", title: "Ultimate Avengers", year: 2006, type: "movie", track: "master", tier: "tier-7", category: "anim-movies", tmdb: "movie/14609", order: 1600 },
-  { id: "ultimate-avengers-2", title: "Ultimate Avengers 2", year: 2006, type: "movie", track: "master", tier: "tier-7", category: "anim-movies", tmdb: "movie/14611", order: 1610 },
   { id: "invincible-ironman", title: "The Invincible Iron Man", year: 2007, type: "movie", track: "master", tier: "tier-7", category: "anim-movies", tmdb: "movie/14613", order: 1620 },
   { id: "ds-sorcerer", title: "Doctor Strange: The Sorcerer Supreme", year: 2007, type: "movie", track: "master", tier: "tier-7", category: "anim-movies", tmdb: "movie/14620", order: 1630 },
   { id: "hulk-vs", title: "Hulk Vs.", year: 2009, type: "movie", track: "master", tier: "tier-7", category: "anim-movies", tmdb: "movie/19798", order: 1640 },
@@ -230,21 +189,6 @@ const MASTER_CATALOG = [
   { id: "technovore", title: "Iron Man: Rise of Technovore", year: 2013, type: "movie", track: "master", tier: "tier-7", category: "anim-movies", tmdb: "movie/185449", order: 1670 },
   { id: "heroes-united", title: "Iron Man & Hulk: Heroes United", year: 2013, type: "movie", track: "master", tier: "tier-7", category: "anim-movies", tmdb: "movie/230896", order: 1680 },
   { id: "avengers-confidential", title: "Avengers Confidential: Black Widow & Punisher", year: 2014, type: "movie", track: "master", tier: "tier-7", category: "anim-movies", tmdb: "movie/256424", order: 1690 },
-  { id: "super-hero-adventures", title: "Marvel Super Hero Adventures", year: 2017, type: "series", track: "master", tier: "tier-7", category: "anim-movies", tmdb: "tv/75085", order: 1700 },
-
-  // Reference — excluded from story progress
-  { id: "legends", title: "Marvel Studios: Legends", year: 2021, type: "series", track: "master", tier: "tier-ref", category: "docs", status: "reference", note: "Character recaps — watch when you've forgotten someone", tmdb: "tv/114472", order: 1800 },
-  { id: "assembled", title: "Marvel Studios: Assembled", year: 2021, type: "series", track: "master", tier: "tier-ref", category: "docs", status: "reference", note: "Behind-the-scenes documentaries", tmdb: "tv/120089", order: 1810 },
-  { id: "expanding-universe", title: "Marvel Studios: Expanding the Universe", year: 2019, type: "special", track: "master", tier: "tier-ref", category: "docs", status: "reference", tmdb: "movie/617995", order: 1820 },
-  { id: "marvels-616", title: "Marvel's 616", year: 2020, type: "series", track: "master", tier: "tier-ref", category: "docs", status: "reference", tmdb: "tv/103516", order: 1830 },
-  { id: "behind-mask", title: "Marvel's Behind the Mask", year: 2021, type: "series", track: "master", tier: "tier-ref", category: "docs", status: "reference", tmdb: "tv/125443", order: 1840 },
-  { id: "hero-project", title: "Marvel's Hero Project", year: 2019, type: "series", track: "master", tier: "tier-ref", category: "docs", status: "reference", tmdb: "tv/91624", order: 1850 },
-
-  // Upcoming
-  { id: "beyond-spider-verse", title: "Spider-Man: Beyond the Spider-Verse", year: 2027, type: "movie", track: "master", tier: "tier-future", category: "upcoming", status: "upcoming", matches: "After Across the Spider-Verse", tmdb: "movie/569094", order: 1900, note: "Upcoming — not out yet" },
-  { id: "secret-wars", title: "Avengers: Secret Wars", year: 2027, type: "movie", track: "master", tier: "tier-future", category: "upcoming", status: "upcoming", matches: "After Avengers: Doomsday", tmdb: "movie/1003598", order: 1910, note: "Upcoming — after Doomsday" },
-  { id: "blade-mcu", title: "Blade (MCU)", year: 2028, type: "movie", track: "master", tier: "tier-future", category: "upcoming", status: "upcoming", matches: "After Blade trilogy archive", tmdb: "movie/335984", order: 1920, note: "Upcoming MCU" },
-  { id: "visionquest", title: "VisionQuest", year: 2026, type: "series", track: "master", tier: "tier-future", category: "upcoming", status: "upcoming", matches: "Pairs with WandaVision", tmdb: "tv/213032", order: 1930, note: "Upcoming — listed Oct 2026" },
 ];
 
 function hydrateMasterCatalog() {

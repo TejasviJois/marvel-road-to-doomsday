@@ -177,6 +177,9 @@ main {
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
+.sort-wrap[hidden] {
+  display: none !important;
+}
 .sort-wrap select {
   min-width: 150px;
   min-height: 44px;
@@ -201,8 +204,23 @@ main {
 .card.is-upcoming .check {
   display: none;
 }
-.poster-wrap img.missing {
-  opacity: 0.15;
+.poster-wrap.no-art::after {
+  content: attr(data-fallback);
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px;
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: 18px;
+  line-height: 1.2;
+  letter-spacing: 0.04em;
+  color: rgba(255,255,255,.72);
+  background:
+    repeating-linear-gradient(135deg, rgba(255,255,255,.03) 0 8px, transparent 8px 16px),
+    linear-gradient(160deg, #1b1b24, #0b0b10);
 }
 
 .next-up {

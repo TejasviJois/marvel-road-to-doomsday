@@ -86,6 +86,7 @@ const CATALOG = [
   { id: "eternals", watchKey: "eternals", title: "Eternals", year: 2021, type: "movie", era: "post-endgame", poster: "posters/eternals.jpg" },
   { id: "black-widow", watchKey: "black-widow", title: "Black Widow", year: 2021, type: "movie", era: "post-endgame", poster: "posters/black-widow.jpg" },
   { id: "wandavision", watchKey: "wandavision", title: "WandaVision", year: 2021, type: "series", era: "post-endgame", poster: "posters/wandavision.jpg", rec: "Strongly recommended" },
+  { id: "fatws", watchKey: "fatws", title: "The Falcon and the Winter Soldier — S1", year: 2021, type: "series", era: "post-endgame", poster: "posters/fatws.jpg", rec: "Essential for Brave New World / Thunderbolts*" },
   { id: "loki-s1", watchKey: "loki-s1", title: "Loki S1", year: 2021, type: "series", era: "post-endgame", poster: "posters/loki-s1.jpg", rec: "Extremely recommended" },
   { id: "loki-s2", watchKey: "loki-s2", title: "Loki S2", year: 2023, type: "series", era: "post-endgame", poster: "posters/loki-s2.jpg", rec: "Extremely recommended" },
   { id: "nwh", watchKey: "nwh", title: "Spider-Man: No Way Home", year: 2021, type: "movie", era: "post-endgame", poster: "posters/nwh.jpg" },
@@ -94,6 +95,7 @@ const CATALOG = [
   { id: "wakanda-forever", watchKey: "wakanda-forever", title: "Black Panther: Wakanda Forever", year: 2022, type: "movie", era: "post-endgame", poster: "posters/wakanda-forever.jpg" },
   { id: "quantumania", watchKey: "quantumania", title: "Ant-Man and the Wasp: Quantumania", year: 2023, type: "movie", era: "post-endgame", poster: "posters/quantumania.jpg" },
   { id: "gotg3", watchKey: "gotg3", title: "Guardians of the Galaxy Vol. 3", year: 2023, type: "movie", era: "post-endgame", poster: "posters/gotg3.jpg" },
+  { id: "ms-marvel", watchKey: "ms-marvel", title: "Ms. Marvel — S1", year: 2022, type: "series", era: "post-endgame", poster: "posters/ms-marvel.jpg", rec: "Essential before The Marvels" },
   { id: "the-marvels", watchKey: "the-marvels", title: "The Marvels", year: 2023, type: "movie", era: "post-endgame", poster: "posters/the-marvels.jpg" },
 
   { id: "spiderman-2002", watchKey: "spiderman-2002", title: "Spider-Man", year: 2002, type: "movie", era: "spiderman", poster: "posters/spiderman-2002.jpg" },
