@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#07070b" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Doomsday" />
+  <title>The Road to Doomsday · Marvel Watchlist</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect fill='%23e62429' width='64' height='64'/><text x='32' y='46' text-anchor='middle' font-size='42' font-family='Arial Black' fill='white'>M</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="vignette" aria-hidden="true"></div>
+
+  <header class="hud">
+    <div class="hud-brand">
+      <div class="m-mark" aria-hidden="true">M</div>
+      <div>
+        <p class="eyebrow">Marvel Studios · Beginner Watch Order</p>
+        <h1>The Road to Doomsday</h1>
+      </div>
+    </div>
+
+    <div class="hud-stats">
+      <div class="stat-block">
+        <p class="stat-label">Universe completed</p>
+        <p class="stat-value" id="progress-label">0 / 46</p>
+        <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progress-bar">
+          <span class="bar-fill" id="progress-fill"></span>
+        </div>
+        <p class="stat-pct" id="progress-pct">0%</p>
+      </div>
+      <div class="stat-block countdown" id="countdown">
+        <p class="stat-label">Until Doomsday</p>
+        <p class="stat-value" id="countdown-value">—</p>
+        <p class="stat-sub">December 18, 2026</p>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="next-up" id="next-up" hidden></section>
+
+    <nav class="era-rail" id="era-rail" aria-label="Watch eras"></nav>
+
+    <div class="toolbar">
+      <div class="filters" role="tablist">
+        <button class="chip is-on" data-filter="all">All</button>
+        <button class="chip" data-filter="left">Remaining</button>
+        <button class="chip" data-filter="done">Watched</button>
+      </div>
+      <div class="toolbar-right">
+        <input id="search" type="search" placeholder="Find a title…" autocomplete="off" />
+        <button class="btn-add" id="open-add" type="button">+ Add title</button>
+      </div>
+    </div>
+
+    <div class="timeline" id="timeline"></div>
+  </main>
+
+  <footer class="foot">
+    <p>Progress saves on this device. Add anything that comes after Doomsday from the button above.</p>
+    <button type="button" class="linkish" id="reset-progress">Reset watched</button>
+  </footer>
+
+  <dialog id="add-modal" class="modal">
+    <form id="add-form" method="dialog">
+      <header>
+        <p class="eyebrow">Expand the list</p>
+        <h2>Add a title</h2>
+      </header>
+
+      <div class="form-grid">
+        <label class="full">
+          Title
+          <input name="title" required placeholder="e.g. Avengers: Secret Wars" />
+        </label>
+        <label>
+          Year
+          <input name="year" type="number" min="1960" max="2040" placeholder="2027" />
+        </label>
+        <label>
+          Type
+          <select name="type">
+            <option value="movie">Movie</option>
+            <option value="series">Series</option>
+          </select>
+        </label>
+        <label class="full">
+          Era
+          <select name="era" id="era-select"></select>
+        </label>
+        <label class="full" id="new-era-wrap" hidden>
+          New era name
+          <input name="newEra" placeholder="e.g. Secret Wars" />
+        </label>
+        <label class="full">
+          Note <span class="opt">(optional)</span>
+          <input name="note" placeholder="Where it sits in the order" />
+        </label>
+        <label class="full">
+          Poster URL <span class="opt">(optional)</span>
+          <input name="posterUrl" id="poster-url" placeholder="https://… or search below" />
+        </label>
+        <div class="poster-tools full">
+          <button type="button" class="btn-ghost" id="find-poster">Find poster</button>
+          <label class="btn-ghost file-btn">
+            Upload poster
+            <input type="file" id="poster-file" accept="image/*" hidden />
+          </label>
+        </div>
+        <div class="poster-preview full" id="poster-preview" hidden>
+          <img id="poster-preview-img" alt="Poster preview" />
+        </div>
+      </div>
+
+      <p class="form-status" id="form-status" hidden></p>
+
+      <footer class="modal-actions">
+        <button type="button" class="btn-ghost" id="cancel-add" value="cancel">Cancel</button>
+        <button type="submit" class="btn-add">Add to list</button>
+      </footer>
+    </form>
+  </dialog>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
